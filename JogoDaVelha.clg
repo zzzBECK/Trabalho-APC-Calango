@@ -1,0 +1,128 @@
+algoritmo JogoDaVelha;
+// Síntese
+//  Objetivo:  Jogo da Velha
+//  Entrada : Nome dos jogadores e suas Linhas e Colunas (posição) de cada jogada, em que o jogador colocará seu símbolo
+//  Saída   : Quem ganhou ou se deu velha.
+
+
+principal
+	// Declarações
+	inteiro linha, coluna, i, j, k;
+	caracter matriz[3][3];
+	texto nome[2];
+	
+	// Instruções
+	escreval("JOGO DA VELHA");
+	escreval("");
+
+	// Preenche a matriz 3x3 com símbolos que representam vazio.
+	para (i de 0 ate 2 passo 1)faca
+		para(j de 0 ate 2 passo 1)faca
+			matriz[i][j] = '•';
+		fimPara
+	fimPara
+
+	// Printa na tela a matriz com seus espaços vazio representados por símbolos
+	para (i de 0 ate 2 passo 1)faca
+		para(j de 0 ate 2 passo 1)faca
+			escreva(matriz[i][j]);
+			se (j != 2)entao
+				escreva(" ");
+			fimSe
+		fimPara
+		escreval("");
+	fimPara
+
+	// Pede para que os jogadores 1 e 2 escolham seus nomes, esses nomes são armazendados no vetor nome
+	nome[0] = nomeJogador1();
+	nome[1] = nomeJogador2();
+
+	// Loop de repetição para os jogadores escolherem as posiçoes e fazer a verificação de qual ganhou
+	para (i de 0 ate 8 passo 1)faca
+
+		//loop de repetição para armazenar as linhas e colunas escolhidas pelo jogador em cada jogada
+		faca
+			escreval("JOGADA ", i + 1);
+			escreval("JOGADOR ", nome[i % 2]);
+			
+			escreval("Linha(1 - 3)");
+			leia(linha);
+			
+			se(linha < 1 ou linha > 3)entao
+				enquanto (linha < 1 ou linha > 3)faca
+					escreval("Valor invalido, digite a linha novamente");
+					leia(linha);
+				fimEnquanto
+			fimSe
+			
+			escreval("Coluna(1 - 3)");
+			leia(coluna);
+			
+			se(coluna < 1 ou coluna > 3)entao
+				enquanto (coluna < 1 ou coluna > 3)faca
+					escreval("Valor invalido, digite a coluna novamente");
+					leia(coluna);
+				fimEnquanto
+			fimSe
+			
+			linha = linha - 1;
+			coluna = coluna - 1;
+
+			se (matriz[linha][coluna] != '•')entao
+				escreval("Espaco ja escolhido, escolha outra posicao");
+			fimSe
+			
+		enquanto (matriz[linha][coluna] != '•');
+
+		// Substituição dos espaços vazios pelo símbolo do jogador
+		se (i % 2 == 0)entao
+			matriz[linha][coluna] = 'X';
+		senao
+			matriz[linha][coluna] = 'O';
+		fimSe
+		
+		limpaTela();
+		
+		para (j de 0 ate 2 passo 1)faca
+			para(k de 0 ate 2 passo 1)faca
+				escreva(matriz[j][k]);
+				se (k != 2)entao
+					escreva(" ");
+				fimSe
+			fimPara
+			escreval("");
+		fimPara
+		
+		se(((matriz[0][0] == matriz[0][1]) e (matriz[0][0] == matriz[0][2]) e (matriz[0][0] != '•')) ou
+		   ((matriz[0][0] == matriz[1][1]) e (matriz[0][0] == matriz[2][2]) e (matriz[0][0] != '•')) ou
+		   ((matriz[2][0] == matriz[2][1]) e (matriz[2][0] == matriz[2][2]) e (matriz[2][0] != '•')) ou
+		   ((matriz[0][0] == matriz[1][0]) e (matriz[0][0] == matriz[2][0]) e (matriz[0][0] != '•')) ou
+		   ((matriz[0][2] == matriz[1][2]) e (matriz[0][2] == matriz[2][2]) e (matriz[0][2] != '•')) ou
+		   ((matriz[1][0] == matriz[1][1]) e (matriz[1][0] == matriz[1][2]) e (matriz[1][0] != '•')) ou
+		   ((matriz[0][1] == matriz[1][1]) e (matriz[0][1] == matriz[2][1]) e (matriz[0][1] != '•')) ou
+		   ((matriz[2][0] == matriz[1][1]) e (matriz[2][0] == matriz[0][2]) e (matriz[2][0] != '•')))entao
+			escreval(nome[i % 2], " GANHOU!!!!");
+			escreval("♣☻☺♥♠");
+			interrompa;
+		senao
+			se(i == 8)entao
+				escreval("DEU VELHA!!! ◘•○↨§§");
+			fimSe
+		fimSe
+	fimPara
+
+fimPrincipal
+
+funcao texto nomeJogador1()
+	texto nome;
+	escreva("Digite o nome do jogador 1: ");
+	leia(nome);
+	retorna nome;
+fimFuncao
+
+funcao texto nomeJogador2()
+	texto nome;
+	escreva("Digite o nome do jogador 2: ");
+	leia(nome);
+	retorna nome;
+fimFuncao
